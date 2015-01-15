@@ -1,4 +1,4 @@
-package fr.istic.atlasmuseum;
+package fr.istic.atlasmuseum.main;
 
 import fr.istic.atlasmuseum.robots.RobotWikidata;
 
