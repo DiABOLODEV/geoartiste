@@ -2,6 +2,7 @@ package fr.istic.atlasmuseum.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,11 +21,13 @@ public class ParserGPS {
 	
 	
 	
-	public static String[] analyseAnswer(String xmlResult){
+	public static HashMap<String,String> analyseAnswer(String xmlResult){
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = null;
 		String longitude = "";
 		String latitude = "";
+		String adresse = "";
+		
 		try {
 			builder = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
@@ -55,7 +58,7 @@ public class ParserGPS {
 		}
 		if (nodes.getLength() > 0) {
 			status = nodes.item(0).getTextContent();
-			System.out.println(status);	
+			//System.out.println(status);	
 		} 
 		//get longitude
 		try {
@@ -90,7 +93,30 @@ public class ParserGPS {
 			//System.out.println("Longitude not found");
 			longitude = "Longitude not found";
 		}
-		String[] r =  {latitude, longitude};
+		
+		//get adress
+		try {
+			nodes = (NodeList)xPath.evaluate("/GeocodeResponse/result/formatted_address",
+					edoc.getDocumentElement(), XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
+
+		
+		if (nodes.getLength() > 0) {
+			values = nodes.item(0).getTextContent();
+			//System.out.println(values);
+			adresse = values;
+		} else {
+			//System.out.println("Longitude not found");
+			adresse = "Adresse not found";
+		}
+		
+		
+		HashMap<String, String> r = new HashMap<String, String>();
+		r.put("latitude", latitude);
+		r.put("longitude", longitude);
+		r.put("adresse", adresse);
 		return r;
 	}
 
