@@ -1,10 +1,11 @@
 package fr.istic.atlasmuseum;
 
+import fr.istic.atlasmuseum.robots.RobotWikidata;
+
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		new RobotWikidata();
 	}
 
 }
