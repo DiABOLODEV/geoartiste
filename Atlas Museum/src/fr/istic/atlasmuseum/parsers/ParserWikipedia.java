@@ -56,9 +56,9 @@ public class ParserWikipedia{
 		return description;
 
 	}
-	public String enleverPonctuation(String str){
-		System.out.println("regex:"+str.replaceAll ( "\\.|\\,"," " ));
-		return str.replaceAll ( "\\.|\\,"," " );
+	public String sanitize(String str){
+		//System.out.println("regex:"+str.replaceAll ( "\\.|\\,|\\-|\\(|\\)|\\_"," " ).toLowerCase());
+		return str.replaceAll ( "\\.|\\,|\\-|\\(|\\)|\\_"," " ).toLowerCase();
 		
 	}
 	/**
@@ -68,7 +68,7 @@ public class ParserWikipedia{
 	 * @return la liste de mot qui compose cette description
 	 */
 	public String[] getDescriptionWords(String description){
-		return enleverPonctuation(description).split(" ");
+		return sanitize(description).split(" ");
 	}
 
 	public String getXml() {

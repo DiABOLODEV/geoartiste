@@ -26,6 +26,7 @@ public class Parseur  extends DefaultHandler{
 	private String key;
 	private String original;
 	
+	
 	public Parseur (String original){
 		this.original = original;
 			try {
