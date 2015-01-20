@@ -39,10 +39,25 @@ public class RobotWikipedia implements Robot{
 			String resultRequest = Requestor.get(request);
 			
 			System.out.println("------------------------------------------");
-			System.out.println("requête:"+request);
+			System.out.println("Artiste: "+artiste);
 			
 			parser.setXml(resultRequest);
-			System.out.println("résultat après parsing: "+parser.getDescription());
+			
+			String description = parser.getDescription();
+			
+			if(description!= ""){
+				System.out.println("Description de l'artiste: "+description);
+				System.out.println("Mots clés correspondant à l'artiste: ");
+				String[] motscles = parser.getDescriptionWords(description);
+				for(int i = 0; i < motscles.length; i++){
+					System.out.println("Mot "+i+": "+motscles[i]);
+				}
+			}
+			else{
+				System.out.println("Aucun informations n'est présente sur la base Wikipedia pour cet artiste");
+			}
+			
+			
 			
 		}
 		

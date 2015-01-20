@@ -3,6 +3,7 @@ package fr.istic.atlasmuseum.parsers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,8 +22,11 @@ public class ParserWikipedia{
 	public ParserWikipedia() {
 		
 	}
+	/**
+	 * Récupére la description de l'artiste à partir du fichier xml, information qui permettra d'en tirer des choses
+	 * @return la description de l'artiste
+	 */
 	
-	//Récupére la description de l'artiste, information qui permettra d'en tirer des choses
 	public String getDescription(){
 		
 		String description = "";
@@ -45,12 +49,26 @@ public class ParserWikipedia{
 			
 		} catch (ParserConfigurationException | SAXException | IOException | NullPointerException e) {
 			//pas de résultats;
-			description = "aucun résultat";
+			description = "";
 			
 		}
 		
 		return description;
 
+	}
+	public String enleverPonctuation(String str){
+		System.out.println("regex:"+str.replaceAll ( "\\.|\\,"," " ));
+		return str.replaceAll ( "\\.|\\,"," " );
+		
+	}
+	/**
+	 * Récupére la liste de mots qui compose la description
+	 * 
+	 * @param description la description de l'artiste
+	 * @return la liste de mot qui compose cette description
+	 */
+	public String[] getDescriptionWords(String description){
+		return enleverPonctuation(description).split(" ");
 	}
 
 	public String getXml() {
