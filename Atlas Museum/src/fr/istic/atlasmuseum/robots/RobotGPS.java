@@ -2,39 +2,104 @@ package fr.istic.atlasmuseum.robots;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
+import fr.istic.atlasmuseum.fichierxml.ListeOeuvre;
+import fr.istic.atlasmuseum.fichierxml.Parseur;
+import fr.istic.atlasmuseum.parsers.ParserGPS;
 import fr.istic.atlasmuseum.utils.EncoderAddress;
-import fr.istic.atlasmuseum.utils.ParserGPS;
 import fr.istic.atlasmuseum.utils.Requestor;
 
 public class RobotGPS implements Robot{
 
-	private static final String url = "http://maps.googleapis.com/maps/api/geocode/xml";
-	HashMap<String,String> result;
+	private static final String BASE_URL = "http://maps.googleapis.com/maps/api/geocode/xml";
+	private ParserGPS parser;
+	
+	
 	
 	public RobotGPS() {
-		String[]tabAdr= {"Groupe scoaire Giraud, Montigny-les-Metz, Moselle, Alsace",
-		"Collège d'enseignement secondaire, Altkirch, Haut-Rhin, Alsace",
-		"Groupe scolaire, Ammerschwirr, Haut-Rhin, Alsace",
-		"Groupe scolaire rue Mulot, Epinay, Ain, Rhône-Alpes",
-		"Lycée du Val de Saône, Trévoux,Ain, Rhône-AlpesAin",
-		"Collège d'enseignement secondaire, St Anastaise, Besse-et-Saint-Anastaise, Puy-de-Dôme,Auvergne",
-		"Ecole maternelle des géraniums, Cernay, Haut-Rhin, Alsace",
-		"Lycée Davier, Joigny, Yonne, Bourgogne",
-		"Cité scolaire mixte, Montceau-les-Mines, Saône-et-Loire, Bourgogne"};
-        
 		
-		for (int i=0; i<tabAdr.length; i++){
-			System.out.println("*********************ADRESSE n°"+(i+1)+"*****************************");
-			System.out.println(tabAdr[i]);
-			result = ParserGPS.analyseAnswer(Requestor.get(url+"?address=" +EncoderAddress.encodeStringForHTTPGET(tabAdr[i]) +"&sensor=false"));
-			System.out.println(
-					"Adresse: "+result.get("adresse")+
-					"\nLatitude : "+result.get("latitude")+
-					"\nlongitude : "+result.get("longitude"));
+		this.parser = new ParserGPS();
+		analyseResultats();
+//		String[]tabAdr= {"Groupe scoaire Giraud, Montigny-les-Metz, Moselle, Alsace",
+//		"Collï¿½ge d'enseignement secondaire, Altkirch, Haut-Rhin, Alsace",
+//		"Groupe scolaire, Ammerschwirr, Haut-Rhin, Alsace",
+//		"Groupe scolaire rue Mulot, Epinay, Ain, Rhï¿½ne-Alpes",
+//		"Lycï¿½e du Val de Saï¿½ne, Trï¿½voux,Ain, Rhï¿½ne-AlpesAin",
+//		"Collï¿½ge d'enseignement secondaire, St Anastaise, Besse-et-Saint-Anastaise, Puy-de-Dï¿½me,Auvergne",
+//		"Ecole maternelle des gï¿½raniums, Cernay, Haut-Rhin, Alsace",
+//		"Lycï¿½e Davier, Joigny, Yonne, Bourgogne",
+//		"Citï¿½ scolaire mixte, Montceau-les-Mines, Saï¿½ne-et-Loire, Bourgogne"};
+//        
+//		
+//		for (int i=0; i<tabAdr.length; i++){
+//			System.out.println("*********************ADRESSE nï¿½"+(i+1)+"*****************************");
+//			System.out.println(tabAdr[i]);
+//			result = ParserGPS.analyseAnswer(Requestor.get(url+"?address=" +EncoderAddress.encodeStringForHTTPGET(tabAdr[i]) +"&sensor=false"));
+//			System.out.println(
+//					"Adresse: "+result.get("adresse")+
+//					"\nLatitude : "+result.get("latitude")+
+//					"\nlongitude : "+result.get("longitude"));
+//			
+//		}
+//		
+		
+		
+		
+	}
+	
+	public void analyseResultats(){
+		
+		Parseur p = new Parseur("files/original");
+		ArrayList<ListeOeuvre> oeuvres = p.getOeuvre();
+		int coordonneesTrouvees = 0;
+		
+	
+		for(int i=0; i< 1000 ;i++){
+			String nomEtablissement = p.getOeuvre().get(i).getNom_de_l_etablissement();
+			String commune = p.getOeuvre().get(i).getCommune();
+			String departement =p.getOeuvre().get(i).getDepartement() ;
+			String region = p.getOeuvre().get(i).getRegion();
+			//Utiliser le parser pour rÃ©cupÃ©rer les noms et prÃ©noms
+			//Pour tout les artistes (nom, prÃ©nom)
+			HashMap<String, String> params = new HashMap<String, String>();
+            
+			String valAddress= nomEtablissement+ ", "+commune+", "+departement+", "+region;
+			//url+"?address=" +EncoderAddress.encodeStringForHTTPGET(tabAdr[i]) +"&sensor=false
+			params.put("address", valAddress);
+			params.put("sensor", "false");
+			String request = Requestor.generatGetRequest(BASE_URL, params);
+			String resultRequest = Requestor.get(request);
 			
+			
+			
+			HashMap<String,String> result = parser.analyseAnswer(resultRequest); 
+			
+			
+			if (result == null){
+				System.out.println("<tr class=\"danger\"><td>"+valAddress+"</td><td></td><td></td><td></td></tr>");
+			}
+			else{
+				
+				System.out.println("<tr class=\"success\"><td>"+valAddress+"</td><td>"+result.get("adresse")+"</td><td>"+result.get("latitude")+"</td><td>"+result.get("longitude")+"</td></tr>");
+				coordonneesTrouvees++;
+			}
+			
+			//timeout pour google api
+			
+			try {
+				Thread.sleep(502);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
+	
+		System.out.println("Nombre de coordonnÃ©es trouvÃ©es : "+coordonneesTrouvees+"/"+oeuvres.size());
 	}
 }

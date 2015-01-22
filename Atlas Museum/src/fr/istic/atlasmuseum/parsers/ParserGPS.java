@@ -1,4 +1,4 @@
-package fr.istic.atlasmuseum.utils;
+package fr.istic.atlasmuseum.parsers;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -75,7 +75,8 @@ public class ParserGPS {
 			latitude = values;
 		} else {
 			//System.out.println("latitude not found");
-			latitude = "latitude not found";
+			//latitude = "latitude not found";
+			return null;
 		}
 
 		try {
@@ -91,7 +92,8 @@ public class ParserGPS {
 			longitude = values;
 		} else {
 			//System.out.println("Longitude not found");
-			longitude = "Longitude not found";
+			//longitude = "Longitude not found";
+			return null;
 		}
 		
 		//get adress
@@ -109,7 +111,8 @@ public class ParserGPS {
 			adresse = values;
 		} else {
 			//System.out.println("Longitude not found");
-			adresse = "Adresse not found";
+			//adresse = "Adresse not found";
+			return null;
 		}
 		
 		
