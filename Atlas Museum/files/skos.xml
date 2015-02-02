@@ -1,0 +1,324 @@
+<rdf:RDF 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+  
+	<skos:ConceptScheme rdf:about="http:/www.geoartiste.com/#artiste">
+		<dc:title>Notions à propos des artistes</dc:title> 
+		<dc:description>Artiste des un pourcent</dc:description>
+		<dc:creator>C Bèchepois</dc:creator>
+	</skos:ConceptScheme>
+	
+	<skos:ConceptScheme rdf:about="http:/www.geoartiste.com/#sculpture">
+		<dc:title>Notions à propos des sculptures</dc:title> 
+		<dc:description>Sculptures</dc:description>
+		<dc:creator>C Bèchepois</dc:creator>
+	</skos:ConceptScheme>
+	
+	<skos:ConceptScheme rdf:about="http:/www.geoartiste.com/#peinture">
+		<dc:title>Notions à propos des peintures</dc:title> 
+		<dc:description>Peintures</dc:description>
+		<dc:creator>C Bèchepois</dc:creator>
+	</skos:ConceptScheme>
+	
+	<skos:ConceptScheme rdf:about="http:/www.geoartiste.com/#media">
+		<dc:title>Notions à propos des medias</dc:title> 
+		<dc:description>Medias</dc:description>
+		<dc:creator>C Bèchepois</dc:creator>
+	</skos:ConceptScheme>
+	
+	<skos:ConceptScheme rdf:about="http:/www.geoartiste.com/#dessin">
+		<dc:title>Notions à propos des dessins</dc:title> 
+		<dc:description>Dessinst</dc:description>
+		<dc:creator>C Bèchepois</dc:creator>
+	</skos:ConceptScheme>
+	
+	<skos:ConceptScheme rdf:about="http:/www.geoartiste.com/#photographie">
+		<dc:title>Notions à propos des photographies</dc:title> 
+		<dc:description>Photographies</dc:description>
+		<dc:creator>C Bèchepois</dc:creator>
+	</skos:ConceptScheme>
+	
+	<skos:ConceptScheme rdf:about="http:/www.geoartiste.com/#gravure">
+		<dc:title>Notions à propos des gravures</dc:title> 
+		<dc:description>Gravures</dc:description>
+		<dc:creator>C Bèchepois</dc:creator>
+	</skos:ConceptScheme>
+	
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  artiste concepts--> 
+
+	<skos:Concept rdf:about="http:/geoartiste.com/#sculpteur">
+		<skos:prefLabel>Sculpteur</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.my.com/#artiste"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#peintre">
+		<skos:prefLabel>Peintre</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.my.com/#artiste"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#graveur">
+		<skos:prefLabel>Graveur</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.my.com/#artiste"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#dessinateur">
+		<skos:prefLabel>Dessinateur</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.my.com/#artiste"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#mosaïste">
+		<skos:prefLabel>Mosaïste</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.my.com/#artiste"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#realisateur">
+		<skos:prefLabel>Réalisateur</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.my.com/#artiste"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#photographe">
+		<skos:prefLabel>Réalisateur</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.my.com/#artiste"/>
+	</skos:Concept>
+	
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  sculpture concepts--> 
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#buste">
+		<skos:prefLabel>Buste</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#gargouille">
+		<skos:prefLabel>Gargouille</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#statue">
+		<skos:prefLabel>Statue</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#tete">
+		<skos:prefLabel>Tête</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#cire">
+		<skos:prefLabel>Cire</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#argile">
+		<skos:prefLabel>Argile</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#ciment">
+		<skos:prefLabel>Ciment</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#verre">
+		<skos:prefLabel>Verre</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#pierre">
+		<skos:prefLabel>Pierre</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#bois">
+		<skos:prefLabel>Bois</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#vitrail">
+		<skos:prefLabel>Vitrail</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#cinetique">
+		<skos:definition>En mouvement</skos:definition>
+		<skos:prefLabel>Cinétique</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#sculpture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#sculpteur"/>
+	</skos:Concept>
+	
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  peinture concepts--> 
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#fresque">
+		<skos:prefLabel>Fresque</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#acrylique">
+		<skos:prefLabel>Acrylique</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#huile">
+		<skos:prefLabel>Huile</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#colle">
+		<skos:prefLabel>Colle</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#cire">
+		<skos:prefLabel>Cire</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#surtoile">
+		<skos:prefLabel>Sur toile</skos:prefLabel>
+		<skos:altLabel>Toile</skos:altLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#surbois">
+		<skos:prefLabel>Sur bois</skos:prefLabel>
+		<skos:altLabel>Bois</skos:altLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#surcarton">
+		<skos:prefLabel>Sur carton</skos:prefLabel>
+		<skos:altLabel>Carton</skos:altLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#surpapier">
+		<skos:prefLabel>Sur papier</skos:prefLabel>
+		<skos:altLabel>Papier</skos:altLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#surmetal">
+		<skos:prefLabel>Sur metal</skos:prefLabel>
+		<skos:altLabel>Metal</skos:altLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#surplastique">
+		<skos:prefLabel>Sur plastique</skos:prefLabel>
+		<skos:altLabel>plastique</skos:altLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
+	</skos:Concept>
+	
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  media concepts--> 
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#video">
+		<skos:prefLabel>Vidéo</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#media"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#realisateur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#creationsonore">
+		<skos:prefLabel>Création sonore</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#media"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#realisateur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#creationpaysagere">
+		<skos:prefLabel>Création paysagère</skos:prefLabel>
+		<skos:altLabel>paysage</skos:altLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#media"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#realisateur"/>
+	</skos:Concept>
+	
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  dessin concepts--> 
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#aquarelle">
+		<skos:prefLabel>Aquarelle</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#dessin"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#dessinateur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#gouache">
+		<skos:prefLabel>Gouache</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#dessin"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#dessinateur"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#Pastel">
+		<skos:prefLabel>Pastel</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#dessin"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#dessinateur"/>
+	</skos:Concept>
+	
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  ++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!--  photographie concepts--> 
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#tiragepapier">
+		<skos:prefLabel>Tirage papier</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#photographie"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#photographe"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#cartepostale">
+		<skos:prefLabel>Carte postale</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#photographie"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#photographe"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#plaquedeverre">
+		<skos:prefLabel>Plaque de verre</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#photographie"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#photographe"/>
+	</skos:Concept>
+	
+	<skos:Concept rdf:about="http:/geoartiste.com/#appareilphoto">
+		<skos:prefLabel>Appareil photo</skos:prefLabel>
+		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#photographie"/>
+		<skos:broader rdf:resource="http://www.geoartiste.com/#photographe"/>
+	</skos:Concept>
+	
+</rdf:RDF>
