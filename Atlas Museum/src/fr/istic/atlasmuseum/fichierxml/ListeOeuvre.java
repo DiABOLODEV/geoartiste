@@ -4,20 +4,6 @@ import java.util.Date;
 
 public class ListeOeuvre {
 
-	public String getDate_de_presentation_devant_la_commission() {
-		return Date_de_presentation_devant_la_commission;
-	}
-	public void setDate_de_presentation_devant_la_commission(
-			String date_de_presentation_devant_la_commission) {
-		Date_de_presentation_devant_la_commission = date_de_presentation_devant_la_commission;
-	}
-	public String getDate_de_signature_de_l_arret_d_agrement() {
-		return Date_de_signature_de_l_arret_d_agrement;
-	}
-	public void setDate_de_signature_de_l_arret_d_agrement(
-			String date_de_signature_de_l_arret_d_agrement) {
-		Date_de_signature_de_l_arret_d_agrement = date_de_signature_de_l_arret_d_agrement;
-	}
 	private String Cote_du_dossier_aux_archives_du_MCC ;
 	private String Pays; 
 	private String Region;
@@ -173,5 +159,20 @@ public class ListeOeuvre {
 	public void setUniversite_Enseignement_sup_rieur(
 			String universite_Enseignement_sup_rieur) {
 		Universite_Enseignement_sup_rieur = universite_Enseignement_sup_rieur;
+	}
+	
+	public String getDate_de_presentation_devant_la_commission() {
+		return Date_de_presentation_devant_la_commission;
+	}
+	public void setDate_de_presentation_devant_la_commission(
+			String date_de_presentation_devant_la_commission) {
+		Date_de_presentation_devant_la_commission = date_de_presentation_devant_la_commission;
+	}
+	public String getDate_de_signature_de_l_arret_d_agrement() {
+		return Date_de_signature_de_l_arret_d_agrement;
+	}
+	public void setDate_de_signature_de_l_arret_d_agrement(
+			String date_de_signature_de_l_arret_d_agrement) {
+		Date_de_signature_de_l_arret_d_agrement = date_de_signature_de_l_arret_d_agrement;
 	}
 }

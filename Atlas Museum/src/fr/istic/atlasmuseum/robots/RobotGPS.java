@@ -25,7 +25,7 @@ public class RobotGPS implements Robot{
 	public RobotGPS() {
 		
 		this.parser = new ParserGPS();
-		analyseResultats();
+		//analyseResultats();
 //		String[]tabAdr= {"Groupe scoaire Giraud, Montigny-les-Metz, Moselle, Alsace",
 //		"Coll�ge d'enseignement secondaire, Altkirch, Haut-Rhin, Alsace",
 //		"Groupe scolaire, Ammerschwirr, Haut-Rhin, Alsace",
@@ -53,20 +53,26 @@ public class RobotGPS implements Robot{
 		
 	}
 	
-	public void analyseResultats(){
+	public String[] analyseResultats(ListeOeuvre oeuvre){
 		
 		Parseur p = new Parseur("files/original");
 		ArrayList<ListeOeuvre> oeuvres = p.getOeuvre();
 		int coordonneesTrouvees = 0;
-		
+		String[] coordonnees = new String[2];
 	
-		for(int i=0; i< 1000 ;i++){
-			String nomEtablissement = p.getOeuvre().get(i).getNom_de_l_etablissement();
+		//for(int i=0; i< 1000 ;i++){
+			/*String nomEtablissement = p.getOeuvre().get(i).getNom_de_l_etablissement();
 			String commune = p.getOeuvre().get(i).getCommune();
 			String departement =p.getOeuvre().get(i).getDepartement() ;
-			String region = p.getOeuvre().get(i).getRegion();
+			String region = p.getOeuvre().get(i).getRegion();*/
 			//Utiliser le parser pour récupérer les noms et prénoms
 			//Pour tout les artistes (nom, prénom)
+			
+			String nomEtablissement = oeuvre.getNom_de_l_etablissement();
+			String region = oeuvre.getRegion();
+			String departement = oeuvre.getDepartement();
+			String commune = oeuvre.getCommune();
+		
 			HashMap<String, String> params = new HashMap<String, String>();
             
 			String valAddress= nomEtablissement+ ", "+commune+", "+departement+", "+region;
@@ -80,12 +86,12 @@ public class RobotGPS implements Robot{
 			
 			HashMap<String,String> result = parser.analyseAnswer(resultRequest); 
 			
-			
 			if (result == null){
 				System.out.println("<tr class=\"danger\"><td>"+valAddress+"</td><td></td><td></td><td></td></tr>");
 			}
 			else{
-				
+				coordonnees[0] = result.get("latitude");
+				coordonnees[1] = result.get("longitude");
 				System.out.println("<tr class=\"success\"><td>"+valAddress+"</td><td>"+result.get("adresse")+"</td><td>"+result.get("latitude")+"</td><td>"+result.get("longitude")+"</td></tr>");
 				coordonneesTrouvees++;
 			}
@@ -98,8 +104,14 @@ public class RobotGPS implements Robot{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		//}
 	
 		System.out.println("Nombre de coordonnées trouvées : "+coordonneesTrouvees+"/"+oeuvres.size());
+		System.out.println("latitude = "+coordonnees[0]+" _ longitude = "+coordonnees[1]);
+		return coordonnees;
+	}
+
+	public ParserGPS getParser() {
+		return parser;
 	}
 }

@@ -32,12 +32,9 @@ public class Skos extends JFrame{
 	private Document skosTree = null;
 	private GlobalEntriesList allEntries = null;
 
-	public Skos(){
+	public Skos(String fichierSkos){
 		allEntries = new GlobalEntriesList();
-		this.skosPath = this.selectFile("Sélectionner le fichier skos xml");
-		//this.skosPath = "skos.xml";
-		System.out.println(this.skosPath);
-		this.skosTree = this.buildXMLTree(skosPath);
+		this.skosTree = this.buildXMLTree();
 		this.builConcept();
 		List<indexedEntry> l = this.allEntries.getGlobalist();
 		Iterator<indexedEntry> it = l.iterator();
@@ -45,30 +42,11 @@ public class Skos extends JFrame{
 			it.next().display();
 		}
 	}
-
-	public String selectFile(String title){
-		//FileDialog fd = new FileDialog(fra, "Choose a file", FileDialog.LOAD);
-		/*if (dir) {
-			System.setProperty("apple.awt.fileDialogForDirectories", "true");
-		} else {
-			System.setProperty("apple.awt.fileDialogForDirectories", "false");
-		}*/
-		FileDialog fd = new FileDialog(this, title, FileDialog.LOAD);
-		//fd.setTitle("Choose a file ");
-		//fd.setFilenameFilter(new FolderFilter());
-		//fd.setDirectory("/Users/bodin/Desktop/");
-		//fd.setFile("*.pdf");
-		fd.setVisible(true);
-		String filename = fd.getDirectory() + fd.getFile();
-		System.out.println("You chose " + filename);
-		return filename;
-	}
 	
-	public Document buildXMLTree(String filepathsmane){
-		System.out.println("builXMLTree"+filepathsmane);
+	public Document buildXMLTree(){
 		Document atree = null;
 		InputStream sinput = null;
-		File f = new File(filepathsmane);
+		File f = new File("files/skos.xml");
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = null;
 		try {
