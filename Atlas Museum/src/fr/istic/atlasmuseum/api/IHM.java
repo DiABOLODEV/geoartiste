@@ -22,6 +22,7 @@ public class IHM extends JFrame implements ActionListener, ChangeListener{
 	private Button xmlMinistere;
 	private Button remplirBD;
 	private Button clearBD;
+	private Button analyseWikiSkos;
 
 	public IHM(){
 
@@ -88,6 +89,20 @@ public class IHM extends JFrame implements ActionListener, ChangeListener{
 		});   
 		panel.add((Component) clearBD,gbc);
 
+		//Croisé fichier skos et wiki et ajout dans BD
+		analyseWikiSkos = new Button("Analyse Wiki Skos");
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridx=2;
+		gbc.gridy=1;
+		gbc.insets = new Insets(3, 3, 3, 3);
+		analyseWikiSkos.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e)
+			{
+				analyseWikiSkos.getClickedCmd().execute();
+			}
+		});   
+		panel.add((Component) analyseWikiSkos,gbc);
 
 		setContentPane(panel);
 		this.setResizable(false);
@@ -121,8 +136,12 @@ public class IHM extends JFrame implements ActionListener, ChangeListener{
 	public Button getCreerArtistes() {
 		return remplirBD;
 	}
-	
+
 	public Button getClearBD() {
 		return clearBD;
+	}
+
+	public Button getAnalyseWikiSkos() {
+		return analyseWikiSkos;
 	}
 }

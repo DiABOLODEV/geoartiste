@@ -12,37 +12,41 @@ import java.util.Set;
 import fr.istic.atlasmuseum.fichierxml.ListeOeuvre;
 import fr.istic.atlasmuseum.fichierxml.Parseur;
 import fr.istic.atlasmuseum.parsers.ParserWikipedia;
+import fr.istic.atlasmuseum.skos.GlobalEntriesList;
+import fr.istic.atlasmuseum.skos.indexedEntry;
 import fr.istic.atlasmuseum.utils.Requestor;
 
 public class RobotWikipedia implements Robot{
 	private ParserWikipedia parser;
-	
+
 	private static final String BASE_URL = "http://fr.wikipedia.org/w/api.php";
-	
+
 	public RobotWikipedia(){
 		this.parser = new ParserWikipedia();
-		analyseResultats();
+		//analyseResultats();
 	}
-	
+
 	//Analyse les résultat sur les différents artistes
-	public void analyseResultats(){
+	public HashMap<String, Integer> analyseResultats(ListeOeuvre oeuvre){
 		
-		ArrayList<String> artistes = new ArrayList<String>();
+		/*ArrayList<String> artistes = new ArrayList<String>();
 		artistes.add("Claude GOUTIN");
 		artistes.add("André FORFERT");
 		artistes.add("Pierre GESSIER");
 		artistes.add("Léon RAFFIN");
-		
+
 		Parseur p = new Parseur("files/original");
-		ArrayList<ListeOeuvre> oeuvres = p.getOeuvre();
+		ArrayList<ListeOeuvre> oeuvres = p.getOeuvre();*/
 		int descriptionTrouvee = 0;
-		
+
 		HashMap<String, Integer> nomenclature = new HashMap<String, Integer>();
-		
-		
-		for(int i=0; i< oeuvres.size() ;i++){
+
+
+		/*for(int i=0; i< 10 ;i++){
 			String nom = p.getOeuvre().get(i).getNom_de_l_artiste();
-			String prenom = p.getOeuvre().get(i).getPrenom_de_l_artiste();
+			String prenom = p.getOeuvre().get(i).getPrenom_de_l_artiste();*/
+			String nom = oeuvre.getNom_de_l_artiste();
+			String prenom = oeuvre.getPrenom_de_l_artiste();
 			String artiste = prenom+" "+nom;
 			//Utiliser le parser pour récupérer les noms et prénoms
 			//Pour tout les artistes (nom, prénom)
@@ -53,14 +57,14 @@ public class RobotWikipedia implements Robot{
 			params.put("format", "xml");
 			String request = Requestor.generatGetRequest(BASE_URL, params);
 			String resultRequest = Requestor.get(request);
-			
-			//System.out.println("------------------------------------------");
-			//System.out.println("Artiste: "+artiste);
-			
+
+			System.out.println("------------------------------------------");
+			System.out.println("Artiste: "+artiste);
+			System.out.println(resultRequest);
 			parser.setXml(resultRequest);
 			//System.out.println(i+"/"+oeuvres.size());
 			String description = parser.getDescription();
-			
+
 			if(description!= ""){
 				descriptionTrouvee ++;
 				//System.out.println("Description de l'artiste: "+description);
@@ -79,29 +83,29 @@ public class RobotWikipedia implements Robot{
 			else{
 				//System.out.println("Aucun informations n'est présente sur la base Wikipedia pour cet artiste");
 			}
-			
-			
-		}
-		
+
+		//}
+
 		// Ajout des entrées de la map à une liste
-		 List<Entry<String, Integer>> entries = new ArrayList<Entry<String, Integer>>(nomenclature.entrySet());
-		 
-		  // Tri de la liste sur la valeur de l'entrée
-		  Collections.sort(entries, new Comparator<Entry<String, Integer>>() {
-		    public int compare(final Entry<String, Integer> e1, final Entry<String, Integer> e2) {
-		      return e2.getValue().compareTo(e1.getValue());
-		    }
-		  });
-		 
-		  // Affichage du résultat
-		  for (final Entry<String, Integer> entry : entries) {
-		    System.out.println("<tr><td>"+entry.getKey() + "</td><td> " + entry.getValue()+"</td></tr>");
-		  }
-	
-		System.out.println("Nombre de descriptions trouvées : "+descriptionTrouvee+"/"+oeuvres.size());
+		List<Entry<String, Integer>> entries = new ArrayList<Entry<String, Integer>>(nomenclature.entrySet());
+
+		// Tri de la liste sur la valeur de l'entrée
+		Collections.sort(entries, new Comparator<Entry<String, Integer>>() {
+			public int compare(final Entry<String, Integer> e1, final Entry<String, Integer> e2) {
+				return e2.getValue().compareTo(e1.getValue());
+			}
+		});
+
+		// Affichage du résultat
+		for (final Entry<String, Integer> entry : entries) {
+			System.out.println("<tr><td>"+entry.getKey() + "</td><td> " + entry.getValue()+"</td></tr>");
+		}
+
+		//System.out.println("Nombre de descriptions trouvées : "+descriptionTrouvee+"/"+oeuvres.size());
+		return nomenclature;
 
 	}
-	
-	
+
+
 
 }

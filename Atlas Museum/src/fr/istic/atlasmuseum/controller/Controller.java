@@ -1,6 +1,8 @@
 package fr.istic.atlasmuseum.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 
 import fr.istic.atlasmuseum.api.IHM;
 import fr.istic.atlasmuseum.bd.ConnexionBD;
+import fr.istic.atlasmuseum.command.AnalyseWikiSkos;
 import fr.istic.atlasmuseum.command.ChargerMinistere;
 import fr.istic.atlasmuseum.command.ChargerSkos;
 import fr.istic.atlasmuseum.command.ClearBD;
@@ -18,13 +21,17 @@ import fr.istic.atlasmuseum.command.RemplirBD;
 import fr.istic.atlasmuseum.fichierxml.ListeOeuvre;
 import fr.istic.atlasmuseum.fichierxml.Parseur;
 import fr.istic.atlasmuseum.robots.RobotGPS;
+import fr.istic.atlasmuseum.robots.RobotWikipedia;
+import fr.istic.atlasmuseum.skos.GlobalEntriesList;
 import fr.istic.atlasmuseum.skos.Skos;
+import fr.istic.atlasmuseum.skos.indexedEntry;
 import fr.istic.atlasmuseum.utils.ModifierChampOeuvre;
 
 public class Controller {
 
 	private IHM ihm;
 	private ArrayList<ListeOeuvre> listOeuvre;
+	private GlobalEntriesList listEntries;
 	
 	public Controller(IHM ihm){
 		this.ihm = ihm;
@@ -32,10 +39,12 @@ public class Controller {
 		this.ihm.getXmlMinistere().setClickedCmd(new ChargerMinistere(this));
 		this.ihm.getCreerArtistes().setClickedCmd(new RemplirBD(this));
 		this.ihm.getClearBD().setClickedCmd(new ClearBD(this));
+		this.ihm.getAnalyseWikiSkos().setClickedCmd(new AnalyseWikiSkos(this));
 	}
 	
 	public void chargerSkos(){
-		new Skos("files/skos");
+		Skos skos = new Skos("files/skos");
+		this.listEntries = skos.getAllEntries();
 	}
 	
 	public void chargerMinistere(){
@@ -52,7 +61,7 @@ public class Controller {
 		ResultSet generateKey;
 		ResultSet rs;
 		try {
-			for(int i=0; i<this.listOeuvre.size();i++){
+			for(int i=0; i<10;i++){//this.listOeuvre.size();i++){
 				//Info artiste
 				ModifierChampOeuvre modif = new ModifierChampOeuvre(this.listOeuvre.get(i));
 				ListeOeuvre oeuvre = modif.ajoutSimpleCote();
@@ -135,6 +144,33 @@ public class Controller {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	public void analyseWikiSkos(){
+		ConnexionBD connexion = new ConnexionBD();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Date date;
+		try {
+			Statement statement = connexion.getConnexion().createStatement();
+			ResultSet rs;
+			for(int i=0;i<10;i++){//this.listOeuvre.size();i++){
+				RobotWikipedia robot = new RobotWikipedia();
+				HashMap<String, Integer> descriptionArtiste = robot.analyseResultats(this.listOeuvre.get(i));
+				List<indexedEntry> listE = this.listEntries.getGlobalist();
+				for (int j=0;j<listE.size();j++){
+					rs = statement.executeQuery("SELECT DISTINCT id, count(*) as nbLignes FROM artiste WHERE nom='"+listOeuvre.get(i).getNom_de_l_artiste()+"' and prenom='"+listOeuvre.get(i).getPrenom_de_l_artiste()+"'");
+					rs.next();
+					String[] prefLabels = listE.get(j).getPreflabelWords();
+					for(int k=0;k<prefLabels.length;k++){
+						if(descriptionArtiste.containsKey(prefLabels[k])){
+							statement.executeUpdate("INSERT INTO mot_cle (id_artiste, uri, date_maj) VALUES ("+rs.getInt("id")+",'"+listE.get(j).getURI()+"','"+dateFormat.format(new Date())+"')");
+						};
+					}
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
