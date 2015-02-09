@@ -27,8 +27,9 @@ getRoute()->run();
 
 //Fonctions éxécutées par EpiCode basé sur les routes
 function showHelp(){
-	echo 'Aide';
+	include("help.inc.php");
 }
+
 function show404(){
 	echo 'false';
 }
