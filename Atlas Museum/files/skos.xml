@@ -28,7 +28,7 @@
 	
 	<skos:ConceptScheme rdf:about="http:/www.geoartiste.com/#dessin">
 		<dc:title>Notions à propos des dessins</dc:title> 
-		<dc:description>Dessinst</dc:description>
+		<dc:description>Dessins</dc:description>
 		<dc:creator>C Bèchepois</dc:creator>
 	</skos:ConceptScheme>
 	
@@ -237,7 +237,7 @@
 	
 	<skos:Concept rdf:about="http:/geoartiste.com/#surplastique">
 		<skos:prefLabel>Sur plastique</skos:prefLabel>
-		<skos:altLabel>plastique</skos:altLabel>
+		<skos:altLabel>Plastique</skos:altLabel>
 		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#peinture"/>
 		<skos:broader rdf:resource="http://www.geoartiste.com/#peintre"/>
 	</skos:Concept>
@@ -262,7 +262,7 @@
 	
 	<skos:Concept rdf:about="http:/geoartiste.com/#creationpaysagere">
 		<skos:prefLabel>Création paysagère</skos:prefLabel>
-		<skos:altLabel>paysage</skos:altLabel>
+		<skos:altLabel>Paysage</skos:altLabel>
 		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#media"/>
 		<skos:broader rdf:resource="http://www.geoartiste.com/#realisateur"/>
 	</skos:Concept>
@@ -310,7 +310,7 @@
 	</skos:Concept>
 	
 	<skos:Concept rdf:about="http:/geoartiste.com/#plaquedeverre">
-		<skos:prefLabel>Plaque de verre</skos:prefLabel>
+		<skos:prefLabel>Plaque verre</skos:prefLabel>
 		<skos:inScheme rdf:resource="http:/www.geoartiste.com/#photographie"/>
 		<skos:broader rdf:resource="http://www.geoartiste.com/#photographe"/>
 	</skos:Concept>

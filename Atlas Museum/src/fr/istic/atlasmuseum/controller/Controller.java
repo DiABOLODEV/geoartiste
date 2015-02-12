@@ -11,7 +11,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import fr.istic.atlasmuseum.api.IHM;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import fr.istic.atlasmuseum.bd.ConnexionBD;
 import fr.istic.atlasmuseum.command.AnalyseWikiSkos;
 import fr.istic.atlasmuseum.command.ChargerMinistere;
@@ -20,157 +22,157 @@ import fr.istic.atlasmuseum.command.ClearBD;
 import fr.istic.atlasmuseum.command.RemplirBD;
 import fr.istic.atlasmuseum.fichierxml.ListeOeuvre;
 import fr.istic.atlasmuseum.fichierxml.Parseur;
+import fr.istic.atlasmuseum.ihm.IHM;
+import fr.istic.atlasmuseum.robots.RobotApi;
 import fr.istic.atlasmuseum.robots.RobotGPS;
 import fr.istic.atlasmuseum.robots.RobotWikipedia;
 import fr.istic.atlasmuseum.skos.GlobalEntriesList;
 import fr.istic.atlasmuseum.skos.Skos;
 import fr.istic.atlasmuseum.skos.indexedEntry;
-import fr.istic.atlasmuseum.utils.ModifierChampOeuvre;
+import fr.istic.atlasmuseum.utils.ModifierString;
 
 public class Controller {
 
 	private IHM ihm;
 	private ArrayList<ListeOeuvre> listOeuvre;
 	private GlobalEntriesList listEntries;
-	
-	public Controller(IHM ihm){
+	private RobotApi api;
+
+	public Controller(IHM ihm, RobotApi api){
 		this.ihm = ihm;
+		this.api = api;
 		this.ihm.getXmlSkos().setClickedCmd(new ChargerSkos(this));
 		this.ihm.getXmlMinistere().setClickedCmd(new ChargerMinistere(this));
 		this.ihm.getCreerArtistes().setClickedCmd(new RemplirBD(this));
 		this.ihm.getClearBD().setClickedCmd(new ClearBD(this));
 		this.ihm.getAnalyseWikiSkos().setClickedCmd(new AnalyseWikiSkos(this));
 	}
-	
+
 	public void chargerSkos(){
 		Skos skos = new Skos("files/skos");
 		this.listEntries = skos.getAllEntries();
 	}
-	
+
 	public void chargerMinistere(){
 		System.out.println("charger ministere");
 		Parseur parseur = new Parseur("files/original");
 		this.listOeuvre = parseur.getOeuvre();
 		System.out.println(this.listOeuvre.size());
 	}
-	
-	public void remplirBD(){
-		ConnexionBD connexion = new ConnexionBD();
-		Statement st;
-		PreparedStatement statement;
-		ResultSet generateKey;
-		ResultSet rs;
-		try {
-			for(int i=0; i<10;i++){//this.listOeuvre.size();i++){
-				//Info artiste
-				ModifierChampOeuvre modif = new ModifierChampOeuvre(this.listOeuvre.get(i));
-				ListeOeuvre oeuvre = modif.ajoutSimpleCote();
-				String nom = oeuvre.getNom_de_l_artiste();
-				String prenom = oeuvre.getPrenom_de_l_artiste();
-				//Info oeuvre
-				String titre = oeuvre.getTitre_de_l_oeuvre();
-				String description = oeuvre.getDescriptif_de_l_oeuvre();
-				String periode = oeuvre.getPeriode();
-				//Info adresse
-				String pays = oeuvre.getPays();
-				String region = oeuvre.getRegion();
-				String departement = oeuvre.getDepartement();
-				String commune = oeuvre.getCommune();
-				String etablissement = oeuvre.getNom_de_l_etablissement();
-				
-				//Vérification existence de l'artiste
-				st = connexion.getConnexion().createStatement();
-				rs = st.executeQuery("SELECT DISTINCT id, count(*) as nbLignes FROM artiste WHERE nom='"+nom+"' and prenom='"+prenom+"'");
-				rs.next();
-				int nbLignes = rs.getInt("nbLignes");
-				int idArtiste;
-				//Insertion artiste
-				if (nbLignes==0){
-					statement = connexion.getConnexion().prepareStatement("INSERT INTO artiste (nom, prenom) VALUES ('"+nom+"','"+prenom+"')",Statement.RETURN_GENERATED_KEYS);
-					statement.executeUpdate();
-					generateKey = statement.getGeneratedKeys();
-					generateKey.next();
-					idArtiste = generateKey.getInt(1);
-				}
-				else{
-					idArtiste = rs.getInt("id");
-					rs.close();
-				}
-				//calcul coordonnees
-				RobotGPS gps = new RobotGPS();
-				String[] coordonnees = gps.analyseResultats(oeuvre);
-				//Insertion adresse
-				if (coordonnees[0]!=null && coordonnees[1]!=null){
-					System.out.println("latitude = "+Float.parseFloat(coordonnees[0])+" _ longitude = "+Float.parseFloat(coordonnees[1]));
-					statement = connexion.getConnexion().prepareStatement("INSERT INTO adresse (pays, region, departement, commune, etablissement, latitude, longitude) VALUES ('"+pays+"','"+region+"','"+departement+"','"+commune+"','"+etablissement+"',"+Float.parseFloat(coordonnees[0])+","+Float.parseFloat(coordonnees[1])+")",Statement.RETURN_GENERATED_KEYS);
-				}else{
-					statement = connexion.getConnexion().prepareStatement("INSERT INTO adresse (pays, region, departement, commune, etablissement) VALUES ('"+pays+"','"+region+"','"+departement+"','"+commune+"','"+etablissement+"')",Statement.RETURN_GENERATED_KEYS);
-				}
-				statement.executeUpdate();
-				generateKey = statement.getGeneratedKeys();
-				generateKey.next();
-				int idAdresse = generateKey.getInt(1);
-				
-				//Insertion oeuvre
-				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-				Date date = new Date();
-				statement = connexion.getConnexion().prepareStatement("INSERT INTO oeuvre (id_artiste, id_adresse, titre, description, periode, date_maj) VALUES ('"+idArtiste+"','"+idAdresse+"','"+titre+"','"+description+"','"+periode+"','"+dateFormat.format(date)+"')",Statement.RETURN_GENERATED_KEYS);
-				statement.executeUpdate();
-		
-				//int resultat = statement.executeUpdate("INSERT INTO artiste (nom, prenom) VALUES ('+nom+','+prenom+')");
-				//statement.executeUpdate("DELETE FROM artiste");
-			}
-			connexion.getConnexion().close();
-			/*Statement statement = connexion.getConnexion().createStatement();
-			ResultSet resultat = statement.executeQuery( "SELECT * FROM adresse;" );
-		    while ( resultat.next() ) {
 
-		        System.out.println(resultat.getString("commune"));
-		    }*/
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public void remplirBD(){
+		
+		for(int i=0; i<10;i++){//this.listOeuvre.size();i++){
+			//Info artiste
+			ModifierString modif = new ModifierString();
+			ListeOeuvre oeuvre = modif.normaliseOeuvre(this.listOeuvre.get(i));
+			String nom = oeuvre.getNom_de_l_artiste();
+			String prenom = oeuvre.getPrenom_de_l_artiste();
+			//Info oeuvre
+			String titre = oeuvre.getTitre_de_l_oeuvre();
+			String description = oeuvre.getDescriptif_de_l_oeuvre();
+			String periode = oeuvre.getPeriode();
+			//Info adresse
+			String pays = oeuvre.getPays();
+			String region = oeuvre.getRegion();
+			String departement = oeuvre.getDepartement();
+			String commune = oeuvre.getCommune();
+			String etablissement = oeuvre.getNom_de_l_etablissement();
+
+			//Vérification existence de l'artiste
+			int idArtiste = 0;
+			String artistesExistants = this.api.selectArtisteByNomPrenom(nom, prenom);//modif.splitResultatApi(api.selectArtisteByNomPrenom(nom, prenom));
+			System.out.println("artistes Existant : "+ artistesExistants);
+			JSONArray array = new JSONArray(artistesExistants);
+			System.out.println("taille tableau = "+array.length());
+			for(int j=0;j<array.length();j++){
+				System.out.println("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+				idArtiste = array.getJSONObject(j).getInt("id");
+				System.out.println("idArtiste : "+idArtiste);
+			}
+			
+			//Insertion artiste
+			if (idArtiste==0){
+				idArtiste = Integer.parseInt(modif.splitResultatApi(this.api.createArtiste("geoartiste5",nom, prenom)));
+				System.out.println(idArtiste);
+			}
+			//calcul coordonnees
+			RobotGPS gps = new RobotGPS();
+			String[] coordonnees = gps.analyseResultats(listOeuvre.get(i));
+			//Vérification si l'adresse existe déjà
+			int idAdresse = 0;
+			String adressesExistantes = modif.splitResultatApi(this.api.isExistAdresse(pays, region, departement, commune, etablissement));
+			System.out.println("adresses existantes :"+adressesExistantes);
+			if (!adressesExistantes.equals("false")){
+				JSONObject obj = new JSONObject(adressesExistantes);
+				idAdresse = obj.getInt("id");
+			}
+			System.out.println("idadresse ="+idAdresse);
+			//Insertion adresse
+			if(idAdresse==0){
+				if (coordonnees[0]!=null && coordonnees[1]!=null){
+					idAdresse = Integer.parseInt(modif.splitResultatApi(this.api.createAdresse("geoartiste5",pays, region, departement, commune, etablissement, Float.parseFloat(coordonnees[0]), Float.parseFloat(coordonnees[1]), Float.parseFloat(coordonnees[2]))));
+					System.out.println("latitude = "+Float.parseFloat(coordonnees[0])+" _ longitude = "+Float.parseFloat(coordonnees[1]));
+					//statement = connexion.getConnexion().prepareStatement("INSERT INTO adresse (pays, region, departement, commune, etablissement, latitude, longitude) VALUES ('"+pays+"','"+region+"','"+departement+"','"+commune+"','"+etablissement+"',"+Float.parseFloat(coordonnees[0])+","+Float.parseFloat(coordonnees[1])+")",Statement.RETURN_GENERATED_KEYS);
+				}else{
+					System.out.println("pays="+pays+" region="+region+" departement="+departement+" commune="+commune+" etablissement="+etablissement);
+					idAdresse = Integer.parseInt(modif.splitResultatApi(this.api.createAdresse("geoartiste5",pays, region, departement, commune, etablissement, 0, 0, 0)));
+					//statement = connexion.getConnexion().prepareStatement("INSERT INTO adresse (pays, region, departement, commune, etablissement) VALUES ('"+pays+"','"+region+"','"+departement+"','"+commune+"','"+etablissement+"')",Statement.RETURN_GENERATED_KEYS);
+				}
+			}
+			//Vérification existence de l'oeuvre
+			
+			//Insertion oeuvre
+			System.out.println(idArtiste+" _ "+idAdresse);
+			int idOeuvre = Integer.parseInt(modif.splitResultatApi(this.api.createOeuvre("geoartiste5", idArtiste, idAdresse, titre, description, periode, "")));
 		}
 	}
-	
+
 	public void clearBD(){
-		ConnexionBD connexion = new ConnexionBD();
-		try {
-			Statement statement = connexion.getConnexion().createStatement();
-			statement.executeUpdate("DELETE FROM oeuvre");
-			statement.executeUpdate("DELETE FROM mot_cle");
-			statement.executeUpdate("DELETE FROM artiste");
-			statement.executeUpdate("DELETE FROM adresse");
-			connexion.getConnexion().close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		this.api.deleteAll("geoartiste5");
 	}
-	
+
 	public void analyseWikiSkos(){
-		ConnexionBD connexion = new ConnexionBD();
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		Date date;
-		try {
-			Statement statement = connexion.getConnexion().createStatement();
-			ResultSet rs;
-			for(int i=0;i<10;i++){//this.listOeuvre.size();i++){
-				RobotWikipedia robot = new RobotWikipedia();
-				HashMap<String, Integer> descriptionArtiste = robot.analyseResultats(this.listOeuvre.get(i));
-				List<indexedEntry> listE = this.listEntries.getGlobalist();
-				for (int j=0;j<listE.size();j++){
-					rs = statement.executeQuery("SELECT DISTINCT id, count(*) as nbLignes FROM artiste WHERE nom='"+listOeuvre.get(i).getNom_de_l_artiste()+"' and prenom='"+listOeuvre.get(i).getPrenom_de_l_artiste()+"'");
-					rs.next();
-					String[] prefLabels = listE.get(j).getPreflabelWords();
-					for(int k=0;k<prefLabels.length;k++){
-						if(descriptionArtiste.containsKey(prefLabels[k])){
-							statement.executeUpdate("INSERT INTO mot_cle (id_artiste, uri, date_maj) VALUES ("+rs.getInt("id")+",'"+listE.get(j).getURI()+"','"+dateFormat.format(new Date())+"')");
-						};
+		int idArtiste = 0;
+		int idMotCle = 0;
+		for(int i=0;i<10;i++){//this.listOeuvre.size();i++){
+			RobotWikipedia robot = new RobotWikipedia();
+			HashMap<String, Integer> descriptionArtiste = robot.analyseResultats(this.listOeuvre.get(i));
+			String artistesExistants = this.api.selectArtisteByNomPrenom(this.listOeuvre.get(i).getNom_de_l_artiste(), this.listOeuvre.get(i).getPrenom_de_l_artiste());
+			JSONArray array = new JSONArray(artistesExistants);
+			System.out.println("taille tableau = "+array.length());
+			for(int j=0;j<array.length();j++){
+				System.out.println("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+				idArtiste = array.getJSONObject(j).getInt("id");
+				System.out.println("idArtiste : "+idArtiste);
+			}
+			boolean isExistMotCle;
+			ModifierString modif = new ModifierString();
+			List<indexedEntry> listE = modif.normaliseMotCle(this.listEntries.getGlobalist());
+			for (int j=0;j<listE.size();j++){
+				String[] prefLabels = listE.get(j).getPreflabelWords();
+				for(int k=0;k<prefLabels.length;k++){
+					if(descriptionArtiste.containsKey(prefLabels[k])){
+						String motCleExistants = this.api.selectMot_clesByArtisteId(idArtiste);
+						JSONArray array2 = new JSONArray(motCleExistants);
+						System.out.println("taille tableau = "+array2.length());
+						int l=0;
+						isExistMotCle=false;
+						while(l<array2.length() && isExistMotCle==false){
+							System.out.println(array2.getJSONObject(l).getString("uri")+" == "+listE.get(j).getURI());
+							if(array2.getJSONObject(l).getString("uri").equals(listE.get(j).getURI())){
+								System.out.println("BOUCLE WHILE !!");
+								isExistMotCle=true;
+							}
+							l++;
+						}
+						if(!isExistMotCle){
+							System.out.println("IS EXIST MOT CLE");
+							api.createMot_Cle("geoartiste5", idArtiste, listE.get(j).getURI(), "source");
+						}
 					}
 				}
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 }

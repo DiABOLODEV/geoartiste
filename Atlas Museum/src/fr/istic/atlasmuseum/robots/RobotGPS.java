@@ -80,6 +80,7 @@ public class RobotGPS implements Robot{
 			params.put("address", valAddress);
 			params.put("sensor", "false");
 			String request = Requestor.generatGetRequest(BASE_URL, params);
+			System.out.println(request);
 			String resultRequest = Requestor.get(request);
 			
 			

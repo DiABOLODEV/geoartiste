@@ -1,4 +1,4 @@
-package fr.istic.atlasmuseum.api;
+package fr.istic.atlasmuseum.ihm;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -106,7 +106,7 @@ public class IHM extends JFrame implements ActionListener, ChangeListener{
 
 		setContentPane(panel);
 		this.setResizable(false);
-		this.setTitle("Metronome");
+		this.setTitle("Géoartiste");
 		this.setSize(550,120);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

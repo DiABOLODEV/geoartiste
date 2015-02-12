@@ -11,6 +11,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -52,10 +53,34 @@ public class Requestor {
 		}
 		
 		return "";
+	}
+	
+public static String post(String url){
 		
-		
-		
+		URL obj;
+		try {
+			obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", USER_AGENT);
 
+			
+			BufferedReader in = new BufferedReader(
+			        new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+	 
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+			return response.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return "";
 	}
 	
 	/**
@@ -85,6 +110,23 @@ public class Requestor {
 			
 		}
 		return retour;
+	}
+	
+	
+	public static String generatGetRequestApi(String url, List<String> params){
+		String urlComplete = url;
+		String p;
+		Iterator<String> it = params.iterator();
+		while (it.hasNext()){
+			p = it.next();
+			System.out.println("p= "+p);
+			if(!p.equals("")){
+				urlComplete += "/" +p;
+			}else{
+				urlComplete += "/" +null;
+			}
+		}
+		return urlComplete;
 	}
 
 }
