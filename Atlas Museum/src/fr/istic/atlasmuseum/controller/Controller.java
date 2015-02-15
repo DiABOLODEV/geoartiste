@@ -110,10 +110,10 @@ public class Controller {
 			System.out.println("idadresse ="+idAdresse);
 			//Insertion adresse
 			if(idAdresse==0){
-				if (coordonnees[0]!=null && coordonnees[1]!=null){
+				if (coordonnees[0]!=null && coordonnees[1]!=null && coordonnees[2]!=null){
 					idAdresse = Integer.parseInt(modif.splitResultatApi(this.api.createAdresse("geoartiste5",pays, region, departement, commune, etablissement, Float.parseFloat(coordonnees[0]), Float.parseFloat(coordonnees[1]), Float.parseFloat(coordonnees[2]))));
-					System.out.println("latitude = "+Float.parseFloat(coordonnees[0])+" _ longitude = "+Float.parseFloat(coordonnees[1]));
-					//statement = connexion.getConnexion().prepareStatement("INSERT INTO adresse (pays, region, departement, commune, etablissement, latitude, longitude) VALUES ('"+pays+"','"+region+"','"+departement+"','"+commune+"','"+etablissement+"',"+Float.parseFloat(coordonnees[0])+","+Float.parseFloat(coordonnees[1])+")",Statement.RETURN_GENERATED_KEYS);
+					System.out.println("latitude = "+Float.parseFloat(coordonnees[0])+" _ longitude = "+Float.parseFloat(coordonnees[1])+" _ rayon = "+Float.parseFloat(coordonnees[2]));
+					//statement = connexion.getConnexion().prepareStatement("INSERT INTO adresse (pays, region, departement, commune, etablissement, latitude, longitude,rayon) VALUES ('"+pays+"','"+region+"','"+departement+"','"+commune+"','"+etablissement+"',"+Float.parseFloat(coordonnees[0])+","+Float.parseFloat(coordonnees[1])+","+Float.parseFloat(coordonnees[2])+")",Statement.RETURN_GENERATED_KEYS);
 				}else{
 					System.out.println("pays="+pays+" region="+region+" departement="+departement+" commune="+commune+" etablissement="+etablissement);
 					idAdresse = Integer.parseInt(modif.splitResultatApi(this.api.createAdresse("geoartiste5",pays, region, departement, commune, etablissement, 0, 0, 0)));

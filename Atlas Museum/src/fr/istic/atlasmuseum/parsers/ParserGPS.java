@@ -27,7 +27,12 @@ public class ParserGPS {
 		String longitude = "";
 		String latitude = "";
 		String adresse = "";
-		
+		String ville = "";
+		String departement = "";
+		String longitudeSouthwest = "";
+		String latitudesouthwest = "";
+		String longitudeNortheast = "";
+		String latitudeNortheast = "";
 		try {
 			builder = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
@@ -48,6 +53,7 @@ public class ParserGPS {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		//check status
 		String status ="0";
 		try {
@@ -58,9 +64,9 @@ public class ParserGPS {
 		}
 		if (nodes.getLength() > 0) {
 			status = nodes.item(0).getTextContent();
-			//System.out.println(status);	
+
 		} 
-		//get longitude
+		//get latitude
 		try {
 			nodes = (NodeList)xPath.evaluate("/GeocodeResponse/result/geometry/location/lat",
 					edoc.getDocumentElement(), XPathConstants.NODESET);
@@ -71,14 +77,14 @@ public class ParserGPS {
 
 		if (nodes.getLength() > 0) {
 			values = nodes.item(0).getTextContent();
-			//System.out.println(values);
+			
 			latitude = values;
 		} else {
-			//System.out.println("latitude not found");
-			//latitude = "latitude not found";
+			
 			return null;
 		}
 
+		//get longitude
 		try {
 			nodes = (NodeList)xPath.evaluate("/GeocodeResponse/result/geometry/location/lng",
 					edoc.getDocumentElement(), XPathConstants.NODESET);
@@ -88,11 +94,10 @@ public class ParserGPS {
 
 		if (nodes.getLength() > 0) {
 			values = nodes.item(0).getTextContent();
-			//System.out.println(values);
+			
 			longitude = values;
 		} else {
-			//System.out.println("Longitude not found");
-			//longitude = "Longitude not found";
+			
 			return null;
 		}
 		
@@ -107,19 +112,131 @@ public class ParserGPS {
 		
 		if (nodes.getLength() > 0) {
 			values = nodes.item(0).getTextContent();
-			//System.out.println(values);
+			
 			adresse = values;
 		} else {
-			//System.out.println("Longitude not found");
-			//adresse = "Adresse not found";
+			
 			return null;
 		}
 		
+		//get commune
+				try {
+					nodes = (NodeList)xPath.evaluate("/GeocodeResponse/result/address_component[type/text()='locality']/long_name",
+							edoc.getDocumentElement(), XPathConstants.NODESET);
+				} catch (XPathExpressionException e) {
+					e.printStackTrace();
+				}
+
+				
+				if (nodes.getLength() > 0) {
+					values = nodes.item(0).getTextContent();
+					ville = values;
+				} else {
+
+					return null;
+				}
+				
+			//get departement
+				try {
+					nodes = (NodeList)xPath.evaluate("/GeocodeResponse/result/address_component[type/text()='administrative_area_level_2']/long_name",
+							edoc.getDocumentElement(), XPathConstants.NODESET);
+				} catch (XPathExpressionException e) {
+					e.printStackTrace();
+				}
+
+				
+				if (nodes.getLength() > 0) {
+					values = nodes.item(0).getTextContent();
+					departement = values;
+				} else {
+
+					return null;
+				}
+				
+				//get latitudeSouthwest
+				
+				try {
+					nodes = (NodeList)xPath.evaluate("/GeocodeResponse/result/geometry/bounds/southwest/lat",
+							edoc.getDocumentElement(), XPathConstants.NODESET);
+				} catch (XPathExpressionException e) {
+					e.printStackTrace();
+				}
+
+				
+				if (nodes.getLength() > 0) {
+					values = nodes.item(0).getTextContent();
+					latitudesouthwest = values;
+				} else {
+
+					return null;
+				}
+				
+				
+			
+				//get longitudeSouthwest
+				try {
+					nodes = (NodeList)xPath.evaluate("/GeocodeResponse/result/geometry/bounds/southwest/lng",
+							edoc.getDocumentElement(), XPathConstants.NODESET);
+				} catch (XPathExpressionException e) {
+					e.printStackTrace();
+				}
+
+				if (nodes.getLength() > 0) {
+					values = nodes.item(0).getTextContent();
+					
+					longitudeSouthwest = values;
+				} else {
+					
+					return null;
+				}
+				
+				
+				//get latitudeNortheast
+				try {
+					nodes = (NodeList)xPath.evaluate("/GeocodeResponse/result/geometry/bounds/northeast/lat",
+							edoc.getDocumentElement(), XPathConstants.NODESET);
+				} catch (XPathExpressionException e) {
+					e.printStackTrace();
+				}
+				//String valuesNord ="0";
+
+				if (nodes.getLength() > 0) {
+					values = nodes.item(0).getTextContent();
+					
+					latitudeNortheast = values;
+				} else {
+					
+					return null;
+				}
+                
+				
+				//get longitudeNortheast
+				try {
+					nodes = (NodeList)xPath.evaluate("/GeocodeResponse/result/geometry/bounds/northeast/lng",
+							edoc.getDocumentElement(), XPathConstants.NODESET);
+				} catch (XPathExpressionException e) {
+					e.printStackTrace();
+				}
+
+				if (nodes.getLength() > 0) {
+					values = nodes.item(0).getTextContent();
+					
+					longitudeNortheast = values;
+				} else {
+					
+					return null;
+				}
 		
 		HashMap<String, String> r = new HashMap<String, String>();
 		r.put("latitude", latitude);
 		r.put("longitude", longitude);
 		r.put("adresse", adresse);
+		r.put("ville", ville);
+		r.put("departement", departement);
+		r.put("latitudeSud", latitudesouthwest);
+		r.put("longitudeSud", longitudeSouthwest);
+		r.put("longitudeNord", longitudeNortheast);
+		r.put("latitudeNord", latitudeNortheast);
 		return r;
 	}
 

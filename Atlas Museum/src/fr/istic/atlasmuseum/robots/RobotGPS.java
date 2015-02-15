@@ -1,19 +1,13 @@
 package fr.istic.atlasmuseum.robots;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
 
 import fr.istic.atlasmuseum.fichierxml.ListeOeuvre;
 import fr.istic.atlasmuseum.fichierxml.Parseur;
 import fr.istic.atlasmuseum.parsers.ParserGPS;
-import fr.istic.atlasmuseum.utils.EncoderAddress;
 import fr.istic.atlasmuseum.utils.Requestor;
+import fr.istic.atlasmuseum.utils.Utils;
 
 public class RobotGPS implements Robot{
 
@@ -24,32 +18,7 @@ public class RobotGPS implements Robot{
 	
 	public RobotGPS() {
 		
-		this.parser = new ParserGPS();
-		//analyseResultats();
-//		String[]tabAdr= {"Groupe scoaire Giraud, Montigny-les-Metz, Moselle, Alsace",
-//		"Collï¿½ge d'enseignement secondaire, Altkirch, Haut-Rhin, Alsace",
-//		"Groupe scolaire, Ammerschwirr, Haut-Rhin, Alsace",
-//		"Groupe scolaire rue Mulot, Epinay, Ain, Rhï¿½ne-Alpes",
-//		"Lycï¿½e du Val de Saï¿½ne, Trï¿½voux,Ain, Rhï¿½ne-AlpesAin",
-//		"Collï¿½ge d'enseignement secondaire, St Anastaise, Besse-et-Saint-Anastaise, Puy-de-Dï¿½me,Auvergne",
-//		"Ecole maternelle des gï¿½raniums, Cernay, Haut-Rhin, Alsace",
-//		"Lycï¿½e Davier, Joigny, Yonne, Bourgogne",
-//		"Citï¿½ scolaire mixte, Montceau-les-Mines, Saï¿½ne-et-Loire, Bourgogne"};
-//        
-//		
-//		for (int i=0; i<tabAdr.length; i++){
-//			System.out.println("*********************ADRESSE nï¿½"+(i+1)+"*****************************");
-//			System.out.println(tabAdr[i]);
-//			result = ParserGPS.analyseAnswer(Requestor.get(url+"?address=" +EncoderAddress.encodeStringForHTTPGET(tabAdr[i]) +"&sensor=false"));
-//			System.out.println(
-//					"Adresse: "+result.get("adresse")+
-//					"\nLatitude : "+result.get("latitude")+
-//					"\nlongitude : "+result.get("longitude"));
-//			
-//		}
-//		
-		
-		
+		this.parser = new ParserGPS();	
 		
 	}
 	
@@ -57,45 +26,70 @@ public class RobotGPS implements Robot{
 		
 		Parseur p = new Parseur("files/original");
 		ArrayList<ListeOeuvre> oeuvres = p.getOeuvre();
-		int coordonneesTrouvees = 0;
-		String[] coordonnees = new String[2];
-	
-		//for(int i=0; i< 1000 ;i++){
-			/*String nomEtablissement = p.getOeuvre().get(i).getNom_de_l_etablissement();
-			String commune = p.getOeuvre().get(i).getCommune();
-			String departement =p.getOeuvre().get(i).getDepartement() ;
-			String region = p.getOeuvre().get(i).getRegion();*/
-			//Utiliser le parser pour rÃ©cupÃ©rer les noms et prÃ©noms
-			//Pour tout les artistes (nom, prÃ©nom)
-			
-			String nomEtablissement = oeuvre.getNom_de_l_etablissement();
-			String region = oeuvre.getRegion();
-			String departement = oeuvre.getDepartement();
-			String commune = oeuvre.getCommune();
+		String[] coordonnees = new String[3];
 		
-			HashMap<String, String> params = new HashMap<String, String>();
-            
-			String valAddress= nomEtablissement+ ", "+commune+", "+departement+", "+region;
-			//url+"?address=" +EncoderAddress.encodeStringForHTTPGET(tabAdr[i]) +"&sensor=false
-			params.put("address", valAddress);
-			params.put("sensor", "false");
-			String request = Requestor.generatGetRequest(BASE_URL, params);
-			System.out.println(request);
-			String resultRequest = Requestor.get(request);
+
+		String nomEtablissement = oeuvre.getNom_de_l_etablissement();
+		String region = oeuvre.getRegion();
+		String departement = oeuvre.getDepartement();
+		String commune = oeuvre.getCommune();
+
+		String valAddress= nomEtablissement+ ", "+commune+", "+departement+", "+region;
+
+		HashMap<String,String> result = this.requestor(valAddress);
+		
+		//Zero resultat retourné
+		if (result == null){
+
+			String valNewAddress = commune+", "+departement;
+			HashMap<String, String> newResult = this.requestor(valNewAddress);
+	      
+			//gecodage inversé pour récupérer la ville
+			String latitude = newResult.get("latitude");
+			String longitude = newResult.get("longitude");
+			String valCordonnees = latitude+","+longitude;
+
+			HashMap<String, String> res = this.reverseGeocode (valCordonnees); 
+			String ville = res.get("ville");
+
+			//calcul et stockage du rayon
+			System.out.println("adresse "+newResult.get("adresse"));
+			double lat1=  Utils.degToRad(Double.parseDouble(res.get("latitudeSud")));
+			double lng1=  Utils.degToRad(Double.parseDouble(res.get("longitudeSud")));
+			double lat2=  Utils.degToRad(Double.parseDouble(res.get("latitudeNord")));
+			double lng2=  Utils.degToRad(Double.parseDouble(res.get("longitudeNord")));
 			
+			int rayon = 6371000;
+			Float diametre = (float) (rayon * Math.acos(((Math.sin(lat1)*Math.sin(lat2)) + (Math.cos(lat1)*Math.cos(lat2)*Math.cos(lng1-lng2)))));
+		    System.out.println("rayon : "+(diametre/2));
+			coordonnees[0] = latitude;
+			coordonnees[1] = longitude;
+			coordonnees[2] = String.valueOf(diametre/2);
+
+		}
+		// succès
+		else{
+
+			//Vérification fiabilité, gecodage inversé pour récupérer la ville
+			String latitude = result.get("latitude");
+			String longitude = result.get("longitude");
+			String valCordonnees = latitude+","+longitude;
+
+			HashMap<String, String> res1 = this.reverseGeocode (valCordonnees); 
+			String ville = res1.get("ville");
+			String dpt = res1.get("departement");
+	        
+			if(commune.equalsIgnoreCase(ville) && departement.equalsIgnoreCase(dpt)) {
+				
+			System.out.println("adresse "+result.get("adresse"));	
+			coordonnees[0] = latitude;
+			coordonnees[1] = longitude;
+			coordonnees[2] = "10";
 			
-			
-			HashMap<String,String> result = parser.analyseAnswer(resultRequest); 
-			
-			if (result == null){
-				System.out.println("<tr class=\"danger\"><td>"+valAddress+"</td><td></td><td></td><td></td></tr>");
 			}
-			else{
-				coordonnees[0] = result.get("latitude");
-				coordonnees[1] = result.get("longitude");
-				System.out.println("<tr class=\"success\"><td>"+valAddress+"</td><td>"+result.get("adresse")+"</td><td>"+result.get("latitude")+"</td><td>"+result.get("longitude")+"</td></tr>");
-				coordonneesTrouvees++;
-			}
+			
+
+		}
 			
 			//timeout pour google api
 			
@@ -105,11 +99,31 @@ public class RobotGPS implements Robot{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		//}
-	
-		System.out.println("Nombre de coordonnÃ©es trouvÃ©es : "+coordonneesTrouvees+"/"+oeuvres.size());
-		System.out.println("latitude = "+coordonnees[0]+" _ longitude = "+coordonnees[1]);
+				
+		System.out.println("latitude = "+coordonnees[0]+" _ longitude = "+coordonnees[1]+" _ rayon = "+coordonnees[2]);
 		return coordonnees;
+	}
+	
+	public HashMap<String, String> requestor(String valAddress) {
+
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("address", valAddress);
+		params.put("sensor", "false");
+		String request = Requestor.generatGetRequest(BASE_URL, params);
+		String resultRequest = Requestor.get(request);
+		return parser.analyseAnswer(resultRequest);
+
+	}
+		
+	public HashMap<String, String> reverseGeocode(String coordonnees) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("latlng", coordonnees);
+		params.put("sensor", "false");
+		String request = Requestor.generatGetRequest(BASE_URL, params);
+		String resultRequest = Requestor.get(request);
+
+		return parser.analyseAnswer(resultRequest);
+
 	}
 
 	public ParserGPS getParser() {
