@@ -27,8 +27,24 @@ public class ListeOeuvre {
 	private String Nom_de_l_architecte;
 	private String Prenom_de_l_architecte;
 	private String Universite_Enseignement_sup_rieur;
+	private String autres = "";
 	
-
+	public String getAutres() {
+		return autres;
+	}
+	
+	public void concatAutres(String autres) {
+		if (this.autres.equals("")){
+			this.autres = autres;
+		}else{
+			this.autres =this.autres+"__"+autres;
+		}
+	}
+	
+	public void setAutres(String autres){
+		this.autres = autres;
+	}
+	
 	public String getCote_du_dossier_aux_archives_du_MCC() {
 		return Cote_du_dossier_aux_archives_du_MCC;
 	}

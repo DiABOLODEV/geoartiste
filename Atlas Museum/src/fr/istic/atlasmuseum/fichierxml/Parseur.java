@@ -66,9 +66,12 @@ public class Parseur  extends DefaultHandler{
 		if(indice>0)
 			indice--;
 
-		if (qName.equals("Cote_du_dossier_aux_archives_du_MCC"))
+		if (qName.equals("Cote_du_dossier_aux_archives_du_MCC")){
 			oeuvre.get(indice).setCote_du_dossier_aux_archives_du_MCC(buffer.toString());
-
+			if(!buffer.toString().equals("")){
+				oeuvre.get(indice).concatAutres("cote_"+buffer.toString());
+			}
+		}
 		else if(qName.equals("Pays"))
 			oeuvre.get(indice).setPays(buffer.toString());
 
@@ -84,8 +87,12 @@ public class Parseur  extends DefaultHandler{
 		else if (qName.equals("Nom_de_l_etablissement"))
 			oeuvre.get(indice).setNom_de_l_etablissement(buffer.toString());
 
-		else if (qName.equals("Maitre_d_ouvrage_actuel"))
+		else if (qName.equals("Maitre_d_ouvrage_actuel")){
 			oeuvre.get(indice).setMaitre_d_ouvrage_actuel(buffer.toString());
+			if(!buffer.toString().equals("")){
+				oeuvre.get(indice).concatAutres("maitreOuvrage_"+buffer.toString());
+			}
+		}
 
 		else if (qName.equals("Nom_de_l_artiste"))
 			oeuvre.get(indice).setNom_de_l_artiste(buffer.toString());
@@ -93,29 +100,57 @@ public class Parseur  extends DefaultHandler{
 		else if (qName.equals("Prenom_de_l_artiste"))
 			oeuvre.get(indice).setPrenom_de_l_artiste(buffer.toString());
 
-		else if(qName.equals("Type_de_commission"))
+		else if(qName.equals("Type_de_commission")){
 			oeuvre.get(indice).setType_de_commission(buffer.toString());
+			if(!buffer.toString().equals("")){
+				oeuvre.get(indice).concatAutres("typeCommission_"+buffer.toString());
+			}
+		}
 
-		else if(qName.equals("Date_de_presentation_devant_la_commission"))
-			oeuvre.get(indice).setDate_de_presentation_devant_la_commission((buffer.toString()));	
+		else if(qName.equals("Date_de_presentation_devant_la_commission")){
+			oeuvre.get(indice).setDate_de_presentation_devant_la_commission((buffer.toString()));
+			if(!buffer.toString().equals("")){		
+				oeuvre.get(indice).concatAutres("dateCommission_"+buffer.toString());
+			}
+		}
 
 		else if(qName.equals("Periode"))
 			oeuvre.get(indice).setPeriode(buffer.toString());	
 
-		else if(qName.equals("Date_de_signature_de_l_arret_d_agrement"))
-			oeuvre.get(indice).setDate_de_signature_de_l_arret_d_agrement(buffer.toString());	
+		else if(qName.equals("Date_de_signature_de_l_arret_d_agrement")){
+			oeuvre.get(indice).setDate_de_signature_de_l_arret_d_agrement(buffer.toString());
+			if(!buffer.toString().equals("")){
+				oeuvre.get(indice).concatAutres("dateSignature_"+buffer.toString());
+			}
+		}
 
-		else if(qName.equals("Annee_installation_de_l_oeuvre"))
+		else if(qName.equals("Annee_installation_de_l_oeuvre")){
 			oeuvre.get(indice).setAnnee_installation_de_l_oeuvre(buffer.toString());
+			if(!buffer.toString().equals("")){
+				oeuvre.get(indice).concatAutres("anneeOeuvre_"+buffer.toString());
+			}
+		}
 
-		else if(qName.equals("Observations"))	
+		else if(qName.equals("Observations")){	
 			oeuvre.get(indice).setObservations(buffer.toString());
+			if(!buffer.toString().equals("")){
+				oeuvre.get(indice).concatAutres("observations_"+buffer.toString());
+			}
+		}
 
-		else if(qName.equals("Realise"))
+		else if(qName.equals("Realise")){
 			oeuvre.get(indice).setRealise(buffer.toString());
+			if(!buffer.toString().equals("") && !buffer.toString().equals("?")){
+				oeuvre.get(indice).concatAutres("realise_"+buffer.toString());
+			}
+		}
 
-		else if(qName.equals("Source_s"))	
+		else if(qName.equals("Source_s")){	
 			oeuvre.get(indice).setSource_s(buffer.toString());
+			if(!buffer.toString().equals("")){
+				oeuvre.get(indice).concatAutres("source_"+buffer.toString());
+			}
+		}
 
 		else if(qName.equals("Titre_de_l_oeuvre"))
 			oeuvre.get(indice).setTitre_de_l_oeuvre(buffer.toString());
@@ -123,19 +158,34 @@ public class Parseur  extends DefaultHandler{
 		else if(qName.equals("Descriptif_de_l_oeuvre"))
 			oeuvre.get(indice).setDescriptif_de_l_oeuvre(buffer.toString());
 
-		else if(qName.equals("Photographie_de_l_oeuvre_oui"))	
+		else if(qName.equals("Photographie_de_l_oeuvre_oui")){	
 			oeuvre.get(indice).setPhotographie_de_l_oeuvre_oui(buffer.toString());
+			if(!buffer.toString().equals("")){
+				oeuvre.get(indice).concatAutres("photographie_"+buffer.toString());
+			}
+		}
 
-		else if(qName.equals("Nom_de_l_architecte"))
+		else if(qName.equals("Nom_de_l_architecte")){
 			oeuvre.get(indice).setNom_de_l_architecte(buffer.toString());
+			if(!buffer.toString().equals("")){
+				oeuvre.get(indice).concatAutres("nomArchitecte_"+buffer.toString());
+			}
+		}
 
 
-		else if(qName.equals("Prenom_de_l_architecte"))
+		else if(qName.equals("Prenom_de_l_architecte")){
 			oeuvre.get(indice).setPrenom_de_l_architecte(buffer.toString());
+			if(!buffer.toString().equals("")){
+				oeuvre.get(indice).concatAutres("prenomArchitecte_"+buffer.toString());
+			}
+		}
 
-		else if(qName.equals("Universite_Enseignement_sup_rieur"))
+		else if(qName.equals("Universite_Enseignement_sup_rieur")){
 			oeuvre.get(indice).setUniversite_Enseignement_sup_rieur(buffer.toString());
-
+			if(!buffer.toString().equals("")){
+				oeuvre.get(indice).concatAutres("univEnsSup_"+buffer.toString());
+			}
+		}
 	}
 
 	@Override

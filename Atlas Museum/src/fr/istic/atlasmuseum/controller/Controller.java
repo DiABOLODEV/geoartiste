@@ -72,6 +72,8 @@ public class Controller {
 			String titre = oeuvre.getTitre_de_l_oeuvre();
 			String description = oeuvre.getDescriptif_de_l_oeuvre();
 			String periode = oeuvre.getPeriode();
+			String autres = oeuvre.getAutres();
+			System.out.println(this.listOeuvre.get(i).getAutres()+" ####################### MODIF "+autres);
 			//Info adresse
 			String pays = oeuvre.getPays();
 			String region = oeuvre.getRegion();
@@ -121,10 +123,121 @@ public class Controller {
 				}
 			}
 			//Vérification existence de l'oeuvre
+			String oeuvresExistantes = modif.splitResultatApi(api.selectOeuvresByArtisteId(idArtiste));
+			String autresOeuvresExistantes = "";
+			HashMap<String,String> mapAutresOeuvresExistantes;
+			HashMap<String,String> mapAutres = modif.mappingAutres(autres);
+			boolean isExistOeuvre = false;
+			if (!oeuvresExistantes.equals("false")){
+				JSONArray obj = new JSONArray(oeuvresExistantes);
+				int j = 0;
+				isExistOeuvre = false;
+				while(j<obj.length() && !isExistOeuvre){
+					autresOeuvresExistantes = obj.getJSONObject(j).getString("autre");
+					mapAutresOeuvresExistantes = modif.mappingAutres(autresOeuvresExistantes);
+					String key="";
+					switch(key){
+					case "cote":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "maitreouvrage":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "typecommission":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "datecommission":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "datesignature":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "anneeoeuvre":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "observations":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "realise":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "source":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "photographie":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "nomarchitecte":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "prenomarchitecte":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					case "univenssup":
+						if(mapAutres.containsKey(key) && mapAutresOeuvresExistantes.containsKey(key)){
+							if(mapAutres.get(key).equals(mapAutresOeuvresExistantes.get(key))){
+								isExistOeuvre = true;
+							}
+						}
+						break;
+					}
+					j++;
+				}
+			}
 			
 			//Insertion oeuvre
 			System.out.println(idArtiste+" _ "+idAdresse);
-			int idOeuvre = Integer.parseInt(modif.splitResultatApi(this.api.createOeuvre("geoartiste5", idArtiste, idAdresse, titre, description, periode, "")));
+			if(isExistOeuvre){
+				int idOeuvre = Integer.parseInt(modif.splitResultatApi(this.api.createOeuvre("geoartiste5", idArtiste, idAdresse, titre, description, periode, autres)));
+			}
 		}
 	}
 

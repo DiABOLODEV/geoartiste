@@ -48,6 +48,15 @@ public class RobotApi implements Robot{
 		return resultRequest;
 	}
 	
+	public String selectOeuvresByArtisteId(int idArtiste){
+		List<String> params = new ArrayList<String>();
+		params.add(Integer.toString(idArtiste));
+		String request = Requestor.generatGetRequestApi(BASE_URL+"/selectOeuvresByArtisteId", params);
+		String resultRequest = Requestor.get(request);
+		System.out.println(resultRequest);
+		return resultRequest;
+	}
+	
 	//POST
 	public String createArtiste(String code,String nom, String prenom){
 		List<String> params = new ArrayList<String>();

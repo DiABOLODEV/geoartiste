@@ -1,7 +1,10 @@
 package fr.istic.atlasmuseum.utils;
 
 import java.text.Normalizer;
+import java.util.HashMap;
 import java.util.List;
+
+import org.json.JSONArray;
 
 import fr.istic.atlasmuseum.fichierxml.ListeOeuvre;
 import fr.istic.atlasmuseum.skos.indexedEntry;
@@ -28,7 +31,8 @@ public class ModifierString {
 		oeuvre.setTitre_de_l_oeuvre(mettreEnMinuscule(removeCaracteresSpeciaux(oeuvre.getTitre_de_l_oeuvre())));
 		oeuvre.setDescriptif_de_l_oeuvre(mettreEnMinuscule(removeCaracteresSpeciaux(oeuvre.getDescriptif_de_l_oeuvre())));
 		oeuvre.setPeriode(mettreEnMinuscule(removeCaracteresSpeciaux(oeuvre.getPeriode())));
-
+		oeuvre.setAutres(mettreEnMinuscule(removeCaracteresSpeciaux(oeuvre.getAutres())));
+		
 		return oeuvre;
 	}
 	
@@ -66,5 +70,27 @@ public class ModifierString {
 	
 	public String mettreEnMinuscule(String result){
 		return result.toLowerCase();
+	}
+	
+	public HashMap<String,String> mappingAutres(String autres){
+		HashMap<String,String> mapAutres = new HashMap<String, String>();
+		String[] tabAutres;
+		String[] tabChampAutres;
+		String value="";
+			tabAutres = autres.split("__");
+			for(int j=0;j<tabAutres.length;j++){
+				tabChampAutres = tabAutres[j].split("_");
+				for (int k=1;k<tabChampAutres.length;k++){
+					if(value.equals("")){
+						value = tabChampAutres[k];
+					}else{
+						value += " "+tabChampAutres[k];
+					}
+				}
+				System.out.println("##### "+ tabChampAutres[0]+ " => "+value);
+				mapAutres.put(tabChampAutres[0], value);
+				value="";
+			}
+		return mapAutres;
 	}
 }
