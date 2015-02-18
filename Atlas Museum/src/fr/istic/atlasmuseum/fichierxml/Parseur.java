@@ -4,9 +4,6 @@ package fr.istic.atlasmuseum.fichierxml;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -23,7 +20,6 @@ public class Parseur  extends DefaultHandler{
 	private ArrayList<ListeOeuvre> oeuvre= new ArrayList<ListeOeuvre>();
 
 	//	private HashMap<String,String> dico;
-	private String key;
 	private String original;
 
 	public Parseur (String original){
@@ -226,22 +222,6 @@ public class Parseur  extends DefaultHandler{
 	}
 	public void setOeuvre(ArrayList<ListeOeuvre> oeuvre) {
 		this.oeuvre = oeuvre;
-	}
-	public static void main(final String[] args) {
-		Parseur p =new Parseur("original");
-		p.getOeuvre();
-
-		for(int i=0; i<p.getOeuvre().size();i++){
-			System.out.println("####################### "+i+" #######################");
-			System.out.println("Nom"+":"+p.getOeuvre().get(i).getNom_de_l_artiste());
-			System.out.println("Prenom"+":"+p.getOeuvre().get(i).getPrenom_de_l_artiste());
-			System.out.println("Departement"+":"+p.getOeuvre().get(i).getDepartement());
-			System.out.println("Commune"+":"+p.getOeuvre().get(i).getCommune());
-			System.out.println("Nom de l'etablissement"+":"+p.getOeuvre().get(i).getNom_de_l_etablissement());
-			System.out.println("Region"+":"+p.getOeuvre().get(i).getRegion());
-
-		}
-
 	}
 
 }

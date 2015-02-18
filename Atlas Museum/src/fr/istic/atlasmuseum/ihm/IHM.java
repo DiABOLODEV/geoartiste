@@ -13,7 +13,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import fr.istic.atlasmuseum.button.Button;
-import fr.istic.atlasmuseum.fichierxml.Parseur;
 
 public class IHM extends JFrame implements ActionListener, ChangeListener{
 

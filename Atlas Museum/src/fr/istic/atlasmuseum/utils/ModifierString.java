@@ -4,8 +4,6 @@ import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.List;
 
-import org.json.JSONArray;
-
 import fr.istic.atlasmuseum.fichierxml.ListeOeuvre;
 import fr.istic.atlasmuseum.skos.indexedEntry;
 

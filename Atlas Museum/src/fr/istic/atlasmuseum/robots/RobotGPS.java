@@ -24,8 +24,6 @@ public class RobotGPS implements Robot{
 	
 	public String[] analyseResultats(ListeOeuvre oeuvre){
 		
-		Parseur p = new Parseur("files/original");
-		ArrayList<ListeOeuvre> oeuvres = p.getOeuvre();
 		String[] coordonnees = new String[3];
 		
 

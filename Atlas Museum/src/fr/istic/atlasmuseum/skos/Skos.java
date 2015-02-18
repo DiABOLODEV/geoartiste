@@ -1,6 +1,5 @@
 package fr.istic.atlasmuseum.skos;
 
-import java.awt.FileDialog;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,7 +27,6 @@ import org.xml.sax.SAXException;
 
 public class Skos extends JFrame{
 	
-	private String skosPath;
 	private Document skosTree = null;
 	private GlobalEntriesList allEntries = null;
 

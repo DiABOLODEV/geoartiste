@@ -1,14 +1,13 @@
 package fr.istic.atlasmuseum.robots;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import fr.istic.atlasmuseum.utils.Requestor;
 
 public class RobotApi implements Robot{
 
-	private static final String BASE_URL = "http://bacisback.host22.com";
+	private static final String BASE_URL = "http://geo-artiste.irisa.fr/api";
 	
 	public RobotApi(){
 		

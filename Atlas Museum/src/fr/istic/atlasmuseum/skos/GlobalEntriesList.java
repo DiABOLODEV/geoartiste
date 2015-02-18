@@ -1,13 +1,8 @@
 package fr.istic.atlasmuseum.skos;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.w3c.dom.Attr;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class GlobalEntriesList {
 	private List<indexedEntry> globalist = null;

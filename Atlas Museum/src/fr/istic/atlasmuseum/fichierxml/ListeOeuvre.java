@@ -1,5 +1,4 @@
 package fr.istic.atlasmuseum.fichierxml;
-import java.util.Date;
 
 
 public class ListeOeuvre {
