@@ -42,27 +42,57 @@ public class RobotGPS implements Robot{
 			String valNewAddress = commune+", "+departement;
 			HashMap<String, String> newResult = this.requestor(valNewAddress);
 	      
-			//gecodage inversé pour récupérer la ville
-			String latitude = newResult.get("latitude");
-			String longitude = newResult.get("longitude");
-			String valCordonnees = latitude+","+longitude;
-
-			HashMap<String, String> res = this.reverseGeocode (valCordonnees); 
-			String ville = res.get("ville");
-
-			//calcul et stockage du rayon
-			System.out.println("adresse "+newResult.get("adresse"));
-			double lat1=  Utils.degToRad(Double.parseDouble(res.get("latitudeSud")));
-			double lng1=  Utils.degToRad(Double.parseDouble(res.get("longitudeSud")));
-			double lat2=  Utils.degToRad(Double.parseDouble(res.get("latitudeNord")));
-			double lng2=  Utils.degToRad(Double.parseDouble(res.get("longitudeNord")));
-			
-			int rayon = 6371000;
-			Float diametre = (float) (rayon * Math.acos(((Math.sin(lat1)*Math.sin(lat2)) + (Math.cos(lat1)*Math.cos(lat2)*Math.cos(lng1-lng2)))));
-		    System.out.println("rayon : "+(diametre/2));
-			coordonnees[0] = latitude;
-			coordonnees[1] = longitude;
-			coordonnees[2] = String.valueOf(diametre/2);
+			if (newResult == null){
+				
+				String valNewAddressDep = departement;
+				HashMap<String, String> newResultDep = this.requestor(valNewAddressDep);
+				
+				if (newResultDep!=null){
+					//gecodage inversé pour récupérer la ville
+					String latitude = newResultDep.get("latitude");
+					String longitude = newResultDep.get("longitude");
+					String valCordonnees = latitude+","+longitude;
+		
+					HashMap<String, String> res = this.reverseGeocode (valCordonnees); 
+					String ville = res.get("ville");
+		
+					//calcul et stockage du rayon
+					System.out.println("adresse "+newResultDep.get("adresse"));
+					double lat1=  Utils.degToRad(Double.parseDouble(res.get("latitudeSud")));
+					double lng1=  Utils.degToRad(Double.parseDouble(res.get("longitudeSud")));
+					double lat2=  Utils.degToRad(Double.parseDouble(res.get("latitudeNord")));
+					double lng2=  Utils.degToRad(Double.parseDouble(res.get("longitudeNord")));
+					
+					int rayon = 6371000;
+					Float diametre = (float) (rayon * Math.acos(((Math.sin(lat1)*Math.sin(lat2)) + (Math.cos(lat1)*Math.cos(lat2)*Math.cos(lng1-lng2)))));
+				    System.out.println("rayon : "+(diametre/2));
+					coordonnees[0] = latitude;
+					coordonnees[1] = longitude;
+					coordonnees[2] = String.valueOf(diametre/2);
+				}
+				
+				//gecodage inversé pour récupérer la ville
+				String latitude = newResult.get("latitude");
+				String longitude = newResult.get("longitude");
+				String valCordonnees = latitude+","+longitude;
+	
+				HashMap<String, String> res = this.reverseGeocode (valCordonnees); 
+				String ville = res.get("ville");
+	
+				//calcul et stockage du rayon
+				System.out.println("adresse "+newResult.get("adresse"));
+				double lat1=  Utils.degToRad(Double.parseDouble(res.get("latitudeSud")));
+				double lng1=  Utils.degToRad(Double.parseDouble(res.get("longitudeSud")));
+				double lat2=  Utils.degToRad(Double.parseDouble(res.get("latitudeNord")));
+				double lng2=  Utils.degToRad(Double.parseDouble(res.get("longitudeNord")));
+				
+				int rayon = 6371000;
+				Float diametre = (float) (rayon * Math.acos(((Math.sin(lat1)*Math.sin(lat2)) + (Math.cos(lat1)*Math.cos(lat2)*Math.cos(lng1-lng2)))));
+			    System.out.println("rayon : "+(diametre/2));
+				coordonnees[0] = latitude;
+				coordonnees[1] = longitude;
+				coordonnees[2] = String.valueOf(diametre/2);
+			}
 
 		}
 		// succès
