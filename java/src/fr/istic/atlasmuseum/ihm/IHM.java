@@ -74,7 +74,7 @@ public class IHM extends JFrame implements ActionListener, ChangeListener{
 		panel.add((Component) remplirBD,gbc);
 
 		//Vider la bd
-		clearBD = new Button("Entrez le code");
+		clearBD = new Button("Vider VD");
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridx=0;
 		gbc.gridy=1;

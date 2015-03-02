@@ -63,7 +63,7 @@ public class Controller {
 		/*this.codeFrame.setVisible(true);
 		while(this.codeFrame.getVerifOk().isPush()){
 			if (!this.code.equals("")){*/
-				for(int i=0; i<10;i++){//this.listOeuvre.size();i++){
+				for(int i=0; i<50;i++){//this.listOeuvre.size();i++){
 					//Info artiste
 					ModifierString modif = new ModifierString();
 					ListeOeuvre oeuvre = modif.normaliseOeuvre(this.listOeuvre.get(i));
@@ -262,7 +262,7 @@ public class Controller {
 
 	public void analyseWikiSkos(){
 		int idArtiste = 0;
-		for(int i=0;i<10;i++){//this.listOeuvre.size();i++){
+		for(int i=0;i<50;i++){//this.listOeuvre.size();i++){
 			RobotWikipedia robot = new RobotWikipedia();
 			HashMap<String, Integer> descriptionArtiste = robot.analyseResultats(this.listOeuvre.get(i));
 			String artistesExistants = this.api.selectArtisteByNomPrenom(this.listOeuvre.get(i).getNom_de_l_artiste(), this.listOeuvre.get(i).getPrenom_de_l_artiste());
